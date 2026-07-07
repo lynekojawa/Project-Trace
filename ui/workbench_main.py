@@ -5,14 +5,16 @@ from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QGraphicsView,
     QLineEdit, QLabel, QHBoxLayout, QApplication
 )
-from PySide6.QtGui import QPainter
+from PySide6.QtGui import QPainter, QTransform
 from ui.components.canvas import ManualWorkbenchCanvas, NodeType
+
 
 class TraceWorkbench(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Project Trace - Blueprint Workbench")
-        self.resize(1280, 720)
+        self.resize(1024, 600)
+
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
         main_layout = QVBoxLayout(central_widget)
@@ -21,6 +23,8 @@ class TraceWorkbench(QMainWindow):
 
         self.canvas = ManualWorkbenchCanvas(self)
         self.view = QGraphicsView(self.canvas, self)
+        self.view.centerOn(0,0)
+        self.view.setTransform(QTransform().scale(1.0, 1.0))
         self.view.setRenderHint(QPainter.Antialiasing)
         self.view.setDragMode(QGraphicsView.RubberBandDrag)
         self.view.setStyleSheet("border: none; background-color: #0f0f14;")
@@ -32,14 +36,14 @@ class TraceWorkbench(QMainWindow):
         palette_layout.setContentsMargins(10, 6, 10, 6)
 
         syntax_hint = QLabel("Command Vector Prefix: [FILE:|FUNC:|VAR:]", palette_container)
-        syntax_hint.setStyleSheet("color: #7f8c8d; font-faily: monospace; font-size: 11px;")
+        syntax_hint.setStyleSheet("color: #7f8c8d; font-family:'Courier', monospace; font-size: 11px;")
         palette_layout.addWidget(syntax_hint)
 
         self.command_palette = QLineEdit(palette_container)
         self.command_palette.setPlaceholderText("e.g. FILE: main.py or FUNC: authenticate()")
         self.command_palette.setStyleSheet(
             "background-color: #0f0f14; color: #f0f0f5; border: 1px solid #353545; "
-            "padding: 4px; font-family: monospace; border-radius: 3px;"
+            "padding: 4px; font-family: 'Courier', monospace; border-radius: 3px;"
         )
         self.command_palette.returnPressed.connect(self._execute_vector_command)
         palette_layout.addWidget(self.command_palette)

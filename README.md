@@ -9,3 +9,10 @@ There was miscommunication somewhere so Orion(planner) provide me the code for s
 made PODO to write memorandum to Orion to fix. I have noticed about this miscommunicating alot more from last project. which tells me human role <br>
 is very crucial where to stop and where to continue. <br> 
 Why is AI have hard time to use two languages in once? <br>
+(7/7)<br>
+Continuing on project. <br>
+Resized the canvas space, currently drawing FILE, FUNC. Phase 1: completed-except Dante Review. <br>
+Opened GPT PODO so that I can get another critical reviewer and strategic partner. <br> 
+add __init__.py for all folders ui, components, engine<br> 
+fixed 1 of 2 issues from GPT PODO's comment, there were minor indentation issue at canvas py. so potential_parent was not active<br> 
+memorendum from podo to Orion, Phase 2.5 initiated to enhance and adding 1. save, load and 2. edge arrow<br> 

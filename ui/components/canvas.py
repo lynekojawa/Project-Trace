@@ -1,5 +1,6 @@
 from enum import Enum, auto
-from typing import Dict, List, Optional
+from typing import Dict, Optional
+from engine.repository_graph import RepositoryGraph
 from PySide6.QtCore import Qt, QRectF
 from PySide6.QtWidgets import (
     QGraphicsScene, QGraphicsRectItem, QGraphicsTextItem,
@@ -13,20 +14,21 @@ class NodeType(Enum):
     VARIABLE = auto()
 
 class BlueprintNodeItem(QGraphicsRectItem):
-    def __init__(self, name:str, node_type: NodeType, parent_item: Optional[QGraphicsItem] = None) -> None:
+    def __init__(self, node_id: str, name: str, node_type:NodeType, parent_item: Optional[QGraphicsItem] = None) -> None:
         super().__init__(parent_item)
+        self.node_id = node_id
         self.name = name
         self.node_type = node_type
 
         self.setFlags(
             QGraphicsItem.ItemIsMovable |
             QGraphicsItem.ItemIsSelectable |
-            QGraphicsItem.ItemSendGeometryChanges
+            QGraphicsItem.ItemSendsGeometryChanges
         )
 
         if self.node_type == NodeType.FILE:
             self.setZValue(1.0)
-            self.setRect(0, 0, 240,180)
+            self.setRect(0, 0, 240, 180)
         elif self.node_type == NodeType.FUNCTION:
             self.setZValue(2.0)
             self.setRect(0, 0, 180, 60)
@@ -54,7 +56,7 @@ class BlueprintNodeItem(QGraphicsRectItem):
         if self.node_type == NodeType.FILE:
             return
         scene = self.scene()
-        if not scene:
+        if not scene or not hasattr(scene, 'graph'):
             return
 
         scene_polygon = self.mapToScene(self.rect())
@@ -67,29 +69,34 @@ class BlueprintNodeItem(QGraphicsRectItem):
                 if item.node_type == NodeType.FILE:
                     potential_parent = item
                     break
-            if potential_parent:
-                if self.parentItem() != potential_parent:
-                    absolute_pos = self.scenePos()
-                    self.setParentItem(potential_parent)
-                    local_pos = potential_parent.mapFromScene(absolute_pos)
-                    self.setPos(local_pos)
-            else:
-                if self.parentItem() is not None:
-                    absolute_pos = self.scenePos()
-                    self.setParentItem(None)
-                    self.setPos(absolute_pos)
+
+        if potential_parent:
+            if self.parentItem() != potential_parent:
+                absolute_pos = self.scenePos()
+                self.setParentItem(potential_parent)
+                self.setPos(potential_parent.mapFromScene(absolute_pos))
+                scene.graph.set_node_parent(self.node_id, potential_parent.node_id)
+        else:
+            if self.parentItem() is not None:
+                absolute_pos = self.scenePos()
+                self.setParentItem(None)
+                self.setPos(absolute_pos)
+                scene.graph.set_node_parent(self.node_id, None)
 
 class ManualWorkbenchCanvas(QGraphicsScene):
-    def __init__(self, parent: Optional[object] = None) -> None:
+    def __init__(self, graph_instance: RepositoryGraph, parent: Optional[object] = None) -> None:
         super().__init__(parent)
-        self.setSceneRect(-5000, -5000, 10000, 10000)
+        self.graph = graph_instance
+        self.setSceneRect(-1000, -1000, 2000, 2000)
+        self.setBackgroundBrush((QColor(15, 15, 20)))
         self.node_registry: Dict[str, BlueprintNodeItem] = {}
 
-    def spawn_node(self, name: str, node_type: NodeType, x: float = 0.0, y:float = 0.0) -> BlueprintNodeItem:
-        if name in self.node_registry and self.node_registry[name].scene() == self:
-            return self.node_registry[name]
+    def spawn_node(self, name: str, node_type: NodeType, x: float = 0.0, y: float = 0.0) -> BlueprintNodeItem:
+        node_str_type = node_type.name
 
-        node = BlueprintNodeItem(name, node_type)
+        node_id = self.graph.add_node(name, node_str_type, x, y)
+
+        node = BlueprintNodeItem(node_id, name, node_type)
         node.setPos(x, y)
         self.addItem(node)
         self.node_registry[name] = node
