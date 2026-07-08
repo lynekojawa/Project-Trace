@@ -63,6 +63,7 @@ class RepositoryGraph:
 
     def add_edge(self, source_id: str, target_id: str, relation_type: str) -> Optional[str]:
         """Establishes a directed logical edge vector between two verified workspace nodes"""
+        print(f"DEBUG: Graph checking existence -> Source:{source_id in self.nodes}, Target:{target_id in self.nodes}")
         if source_id not in self.nodes or target_id not in self.nodes:
             return None
 

@@ -6,12 +6,14 @@ from PySide6.QtWidgets import (
     QLineEdit, QLabel, QHBoxLayout, QApplication
 )
 from PySide6.QtGui import QPainter, QTransform
-from ui.components.canvas import ManualWorkbenchCanvas, NodeType
+from engine.repository_graph import RepositoryGraph
+from ui.components.canvas import ManualWorkbenchCanvas, NodeType, BlueprintNodeItem
 
 
 class TraceWorkbench(QMainWindow):
-    def __init__(self) -> None:
+    def __init__(self, graph_instance: RepositoryGraph) -> None:
         super().__init__()
+        self.graph = graph_instance
         self.setWindowTitle("Project Trace - Blueprint Workbench")
         self.resize(1024, 600)
 
@@ -21,10 +23,8 @@ class TraceWorkbench(QMainWindow):
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
-        self.canvas = ManualWorkbenchCanvas(self)
+        self.canvas = ManualWorkbenchCanvas(self.graph, self)
         self.view = QGraphicsView(self.canvas, self)
-        self.view.centerOn(0,0)
-        self.view.setTransform(QTransform().scale(1.0, 1.0))
         self.view.setRenderHint(QPainter.Antialiasing)
         self.view.setDragMode(QGraphicsView.RubberBandDrag)
         self.view.setStyleSheet("border: none; background-color: #0f0f14;")
@@ -50,19 +50,64 @@ class TraceWorkbench(QMainWindow):
 
         main_layout.addWidget(palette_container)
 
+    def _hydrate_ui_from_graph(self) -> None:
+        """Flushes the active canvas UI registry and safely rebuild layout blocks from the graph."""
+        self.canvas.blockSignals(True)
+        self.canvas.clear()
+        self.canvas.node_registry.clear()
+
+        for node_id, node in self.graph.nodes.items():
+            node_type_enum = NodeType[node.node_type]
+            item = BlueprintNodeItem(node_id, node.name, node_type_enum)
+            item.setPos(node.x, node.y)
+            self.canvas.addItem(item)
+            self.canvas.node_registry[node_id] = item
+
+        for node_id, node in self.graph.nodes.items():
+            if node.parent_id and node.parent_id in self.canvas.node_registry:
+                child_item = self.canvas.node_registry[node_id]
+                parent_item = self.canvas.node_registry[node.parent_id]
+                child_item.setParentItem(parent_item)
+                child_item.setPos(parent_item.mapFromScene(node.x, node.y))
+
+        for edge_lookup, edge in self.graph.edges.items():
+            self.canvas.spawn_edge(edge.source_id, edge.target_id, edge.relation_type)
+
+        self.canvas.blockSignals(False)
+        self.canvas.update()
+
+
     @Slot()
     def _execute_vector_command(self)-> None:
         raw_text = self.command_palette.text().strip()
         self.command_palette.clear()
+        if not raw_text: return
 
-        if not raw_text or ":" not in raw_text:
+        if ":" in raw_text:
+            prefix, argument = raw_text.split(":", 1)
+            prefix = prefix.upper().strip()
+            argument = argument.strip()
+        else:
+            prefix = raw_text.upper().strip()
+            argument = ""
+
+        if prefix == "SAVE":
+            filename = f"{argument}.json" if argument else "workspace.json"
+            self.graph.export_workspace(filename)
+            print(f"DEBUG: Workspace saved to {filename}")
             return
 
-        prefix, name = raw_text.split(":", 1)
-        prefix = prefix.upper().strip()
-        name = name.strip()
+        elif prefix == "LOAD":
+            filename = f"{argument}.json" if argument else "workspace.json"
+            if self.graph.import_workspace(filename):
+                self._hydrate_ui_from_graph()
+                print(f"DEBUG: Workspace loaded from {filename}")
+            return
 
-        if not name:
+        if prefix == "CONNECT" and "->" in argument:
+            source_id, target_id = argument.split("->", 1)
+            print(f"DEBUG: Calling spawn_edge with: {source_id.strip()} -> {target_id.strip()}")
+            self.canvas.spawn_edge(source_id.strip(), target_id.strip())
             return
 
         target_type: Optional[NodeType] = None
@@ -75,11 +120,12 @@ class TraceWorkbench(QMainWindow):
 
         if target_type is not None:
             center_scene = self.view.mapToScene(self.view.viewport().rect().center())
-            self.canvas.spawn_node(name, target_type, center_scene.x(), center_scene.y())
+            self.canvas.spawn_node(argument, target_type, center_scene.x(), center_scene.y())
 
 if __name__ == "__main__":
+    shared_graph = RepositoryGraph()
     app = QApplication(sys.argv)
-    window = TraceWorkbench()
+    window = TraceWorkbench(shared_graph)
     window.show()
     sys.exit(app.exec())
 

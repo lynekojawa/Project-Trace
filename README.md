@@ -15,4 +15,9 @@ Resized the canvas space, currently drawing FILE, FUNC. Phase 1: completed-excep
 Opened GPT PODO so that I can get another critical reviewer and strategic partner. <br> 
 add __init__.py for all folders ui, components, engine<br> 
 fixed 1 of 2 issues from GPT PODO's comment, there were minor indentation issue at canvas py. so potential_parent was not active<br> 
-memorendum from podo to Orion, Phase 2.5 initiated to enhance and adding 1. save, load and 2. edge arrow<br> 
+memorendum from podo to Orion, Phase 2.5 initiated to enhance and adding 1. save, load and 2. edge arrow<br>
+(7/8) <br>
+Starting with continuing the phase 2.5 ui connection. <br>
+New class BluepringEdgeItem to separate node and edge. <br>
+Around 260K token Podo started drift, e.g deleting canvas, or functions, I feel like he was working very well btw 150K-230K with all context and logics and codes<br>
+Currently, I can save and load, with different file name. Drawing folder/ node/ edges are looking good. however, when I load it only loads the nodes no edges. <br>
