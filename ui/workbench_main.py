@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QPainter, QTransform
 from engine.repository_graph import RepositoryGraph
-from ui.components.canvas import ManualWorkbenchCanvas, NodeType, BlueprintNodeItem
+from ui.components.canvas import ManualWorkbenchCanvas, NodeType, BlueprintNodeItem, BlueprintEdgeItem
 
 
 class TraceWorkbench(QMainWindow):
@@ -51,7 +51,7 @@ class TraceWorkbench(QMainWindow):
         main_layout.addWidget(palette_container)
 
     def _hydrate_ui_from_graph(self) -> None:
-        """Flushes the active canvas UI registry and safely rebuild layout blocks from the graph."""
+        """Fully restores graph topology from the backend model."""
         self.canvas.blockSignals(True)
         self.canvas.clear()
         self.canvas.node_registry.clear()
@@ -70,8 +70,13 @@ class TraceWorkbench(QMainWindow):
                 child_item.setParentItem(parent_item)
                 child_item.setPos(parent_item.mapFromScene(node.x, node.y))
 
-        for edge_lookup, edge in self.graph.edges.items():
-            self.canvas.spawn_edge(edge.source_id, edge.target_id, edge.relation_type)
+        for edge_id, edge in self.graph.edges.items():
+            source_item = self.canvas.node_registry.get(edge.source_id)
+            target_item = self.canvas.node_registry.get(edge.target_id)
+
+            if source_item and target_item:
+                edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, edge.relation_type)
+                self.canvas.addItem(edge_item)
 
         self.canvas.blockSignals(False)
         self.canvas.update()
@@ -101,13 +106,34 @@ class TraceWorkbench(QMainWindow):
             filename = f"{argument}.json" if argument else "workspace.json"
             if self.graph.import_workspace(filename):
                 self._hydrate_ui_from_graph()
-                print(f"DEBUG: Workspace loaded from {filename}")
             return
 
         if prefix == "CONNECT" and "->" in argument:
             source_id, target_id = argument.split("->", 1)
-            print(f"DEBUG: Calling spawn_edge with: {source_id.strip()} -> {target_id.strip()}")
             self.canvas.spawn_edge(source_id.strip(), target_id.strip())
+            return
+
+        elif prefix == "DELETE":
+            if argument.upper() == "ALL":
+                for node in list(self.canvas.node_registry.values()):
+                    self.canvas._delete_node(node)
+                print("DEBUG: Workspace cleared.")
+            else:
+                target_node = self.canvas._find_node_by_name(argument)
+                if target_node:
+                    self.canvas._delete_node(target_node)
+                    print(f"DEBUG: Node '{argument}' deleted.")
+                else:
+                    print(f"DEBUG: Node '{argument}' not found.")
+        elif prefix == "DELETE_EDGE" and "->" in argument:
+            source_id, target_id = argument.split("->", 1)
+
+            for item in self.canvas.items():
+                if isinstance(item, BlueprintEdgeItem):
+                    if item.source_node.name == source_id.strip() and \
+                            item.target_node.name == target_id.strip():
+                        self.canvas._delete_edge(item)
+                        print(f"DEBUG: Edge {source_id}->{target_id} deleted.")
             return
 
         target_type: Optional[NodeType] = None

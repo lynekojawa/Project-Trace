@@ -21,3 +21,12 @@ Starting with continuing the phase 2.5 ui connection. <br>
 New class BluepringEdgeItem to separate node and edge. <br>
 Around 260K token Podo started drift, e.g deleting canvas, or functions, I feel like he was working very well btw 150K-230K with all context and logics and codes<br>
 Currently, I can save and load, with different file name. Drawing folder/ node/ edges are looking good. however, when I load it only loads the nodes no edges. <br>
+(7/9)<br>
+yesterday I left it from it creates the edges and vertices and it is very flexible. and currently when I load the json it loads all nodes but not edges, that's where to start<br>
+Fixed, edge is now up whenever I reload the savedfile. Surprisingly I like my agent more even if he had 319K tokens <br> 
+I feel like the relationship and some features are not enough before I am move to phase 4,5 with orion I am planning to implement the following features<br>
+1. Delete node and edge 2. Edge color by relationship Call(Green), Import(Blue), External(Purple), Read/Write(Yellow)<br>
+3. Edge Label(CAll/Import/Read/Write)<br> 
+started on implementing deleting node add remove_node into repository_graph.py<br>
+Currently it removes nodes is possible, edge is not. Updated both remove node and edge is possible<br>
+ISSUE: when load the file, it loads the deleted node, no issues with deleted_edge<br>

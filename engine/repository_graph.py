@@ -133,3 +133,31 @@ class RepositoryGraph:
             return True
         except (FileNotFoundError, json.JSONDecodeError, KeyError):
             return False
+
+    def remove_node(self, node_id: str) -> None:
+        print(f"DEBUG: RepositoryGraph.remove_node() called for ID: {node_id}")
+        if node_id in self.hierarchy:
+            children = list(self.hierarchy[node_id])
+            for child_id in children:
+                self.remove_node(child_id)
+            del self.hierarchy[node_id]
+
+        edges_to_remove = [
+            edge_id for edge_id, edge in self.edges.items()
+            if edge.source_id == node_id or edge.target_id == node_id
+        ]
+        for edge_id in edges_to_remove:
+            del self.edges[edge_id]
+
+        node_to_delete = self.nodes.get(node_id)
+
+        if node_to_delete and node_to_delete.parent_id:
+            parent_id = node_to_delete.parent_id
+            if parent_id in self.hierarchy:
+                self.hierarchy[parent_id].discard(node_id)
+
+        if node_id in self.nodes:
+            del self.nodes[node_id]
+            print(f"DEBUG: Successfully deleted node {node_id} from self.nodes")
+        else:
+            print(f"DEBUG: WARNING! Node {node_id} not found in self.nodes!")

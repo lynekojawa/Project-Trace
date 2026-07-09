@@ -102,24 +102,26 @@ class BlueprintNodeItem(QGraphicsRectItem):
 
 
 class BlueprintEdgeItem(QGraphicsLineItem):
-    def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem) -> None:
+    def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem, relation_type: str) -> None:
         super().__init__()
-        print(f"DEBUG: BlueprintEdgeItem __init__ reached for {edge_id}")
         self.edge_id = edge_id
         self.source_node = source
         self.target_node = target
+        self.relation_type = relation_type
+
+        self.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
+
+        self.setZValue(10.0)
+        self.setPen(QPen(QColor(255, 0, 0), 4, Qt.SolidLine))
+
 
         self.source_node.connected_edges.append(self)
         self.target_node.connected_edges.append(self)
 
-        self.setZValue(10.0)
-        self.setPen(QPen(QColor(255, 0, 0), 4, Qt.SolidLine))
         self.update_position()
 
     def update_position(self) -> None:
-        print(f"DEBUG: Edge {self.edge_id} update_position called!")
         if not self.source_node or not self.target_node:
-            print(f"DEBUG: Edge {self.edge_id} source/target node is None!")  # <--- 추가
             return
 
         p1 = self.source_node.scenePos() + self.source_node.rect().center()
@@ -135,6 +137,31 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         self.setSceneRect(-1000, -1000, 2000, 2000)
         self.setBackgroundBrush((QColor(15, 15, 20)))
         self.node_registry: Dict[str, BlueprintNodeItem] = {}
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key_Delete, Qt.Key_backspace):
+            for item in self.selectedItems():
+                if isinstance(item, BlueprintNodeItem):
+                    self._delete_node(item)
+                elif isinstance(item, BlueprintEdgeItem):
+                    self._delete_edge(item)
+        super().keyPressEvent(event)
+
+    def _delete_node(self, node: BlueprintNodeItem):
+        if node.node_id in self.node_registry:
+            del self.node_registry[node.node_id]
+
+        self.removeItem(node)
+
+    def _delete_edge(self, edge: BlueprintEdgeItem):
+        self.graph.remove_edge(edge.source_node.node_id, edge.target_node.node_id)
+
+        if edge in edge.source_node.connected_edges:
+            edge.source_node.connected_edges.remove(edge)
+        if edge in edge.target_node.connected_edges:
+            edge.target_node.connected_edges.remove(edge)
+
+        self.removeItem(edge)
 
     def spawn_node(self, name: str, node_type: NodeType, x: float = 0.0, y: float = 0.0) -> BlueprintNodeItem:
 
@@ -162,7 +189,8 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         edge_id = self.graph.add_edge(source_item.node_id, target_item.node_id, relation_type)
         if not edge_id: return None
 
-        edge_item = BlueprintEdgeItem(edge_id, source_item, target_item)
+        edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, relation_type)
+
         self.addItem(edge_item)
         return edge_item
 
