@@ -102,6 +102,14 @@ class BlueprintNodeItem(QGraphicsRectItem):
 
 
 class BlueprintEdgeItem(QGraphicsLineItem):
+    RELATION_THEMES = {
+        "CALL": QColor(39, 174, 96), #Green
+        "IMPORT": QColor(1, 128, 185), #Blue
+        "EXTERNAL": QColor(155, 89, 182), #Purple
+        "READ": QColor(241, 196, 15), #Yellow
+        "WRITE": QColor(241, 196, 15),
+        "CONNECT": QColor(255, 0, 0),
+    }
     def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem, relation_type: str) -> None:
         super().__init__()
         self.edge_id = edge_id
@@ -112,23 +120,29 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         self.setFlags(QGraphicsItem.ItemIsSelectable | QGraphicsItem.ItemIsFocusable)
 
         self.setZValue(10.0)
-        self.setPen(QPen(QColor(255, 0, 0), 4, Qt.SolidLine))
-
 
         self.source_node.connected_edges.append(self)
         self.target_node.connected_edges.append(self)
 
+        self.label = QGraphicsTextItem(self.relation_type, self)
+        self.label.setDefaultTextColor(QColor(200, 200, 200))
+        color = self.RELATION_THEMES.get(relation_type, QColor(200, 200, 200))
+        self.setPen(QPen(color, 4, Qt.SolidLine))
         self.update_position()
 
     def update_position(self) -> None:
         if not self.source_node or not self.target_node:
             return
-
+        if not hasattr(self, 'label'):
+            return
         p1 = self.source_node.scenePos() + self.source_node.rect().center()
         p2 = self.target_node.scenePos() + self.target_node.rect().center()
         print(f"DEBUG: Edge {self.edge_id} -> P1:{p1.x()},{p1.y()} to P2:{p2.x()},{p2.y()}")
         self.setLine(p1.x(), p1.y(), p2.x(), p2.y())
 
+        mid_x = (p1.x() + p2.x()) / 2
+        mid_y = (p1.y() + p2.y()) / 2
+        self.label.setPos(mid_x, mid_y)
 
 class ManualWorkbenchCanvas(QGraphicsScene):
     def __init__(self, graph_instance: RepositoryGraph, parent: Optional[object] = None) -> None:
@@ -148,6 +162,8 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         super().keyPressEvent(event)
 
     def _delete_node(self, node: BlueprintNodeItem):
+        self.graph.remove_node(node.node_id)
+
         if node.node_id in self.node_registry:
             del self.node_registry[node.node_id]
 

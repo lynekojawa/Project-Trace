@@ -108,9 +108,10 @@ class TraceWorkbench(QMainWindow):
                 self._hydrate_ui_from_graph()
             return
 
-        if prefix == "CONNECT" and "->" in argument:
-            source_id, target_id = argument.split("->", 1)
-            self.canvas.spawn_edge(source_id.strip(), target_id.strip())
+        EDGE_RELATIONS = ["CALL", "IMPORT", "EXTERNAL", "READ", "WRITE", "CONNECT"]
+        if prefix in EDGE_RELATIONS and  "->" in argument:
+            source_name, target_name = argument.split("->", 1)
+            self.canvas.spawn_edge(source_name.strip(), target_name.strip(), prefix)
             return
 
         elif prefix == "DELETE":

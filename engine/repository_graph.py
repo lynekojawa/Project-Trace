@@ -81,13 +81,6 @@ class RepositoryGraph:
         )
         return edge_id
 
-    def remove_edge(self, source_id: str, target_id: str) -> bool:
-        edge_lookup_key = f"{source_id} -> {target_id}"
-        if edge_lookup_key in self.edges:
-            del self.edges[edge_lookup_key]
-            return True
-        return False
-
     def export_workspace(self, file_path: str) -> None:
         """Serializes the exact in-memory directed topological state tree out to disk."""
         serialized_data = {
@@ -161,3 +154,10 @@ class RepositoryGraph:
             print(f"DEBUG: Successfully deleted node {node_id} from self.nodes")
         else:
             print(f"DEBUG: WARNING! Node {node_id} not found in self.nodes!")
+
+    def remove_edge(self, source_id: str, target_id: str) -> bool:
+        edge_lookup_key = f"{source_id} -> {target_id}"
+        if edge_lookup_key in self.edges:
+            del self.edges[edge_lookup_key]
+            return True
+        return False

@@ -18,14 +18,6 @@
             "parent_id": null
         },
         {
-            "node_id": "ad58de22-6eaf-4b24-b592-591a885f23cb",
-            "name": "c",
-            "node_type": "FUNCTION",
-            "x": 23.0,
-            "y": -23.0,
-            "parent_id": null
-        },
-        {
             "node_id": "9a8b1554-932f-4258-a73e-6b10a3537527",
             "name": "wa",
             "node_type": "VARIABLE",
@@ -44,7 +36,7 @@
     ],
     "edges": [
         {
-            "edge_id": "6083827a-b27e-4d37-81a7-d04c970edce4",
+            "edge_id": "da72ea63-16b7-4b26-b770-dc1edf35d1ff",
             "source_id": "d2c697f1-d74a-4495-b834-ab3c57c5b654",
             "target_id": "893f0053-dffe-462a-a926-601037206910",
             "relation_type": "CALL"

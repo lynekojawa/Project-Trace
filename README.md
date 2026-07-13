@@ -30,3 +30,18 @@ I feel like the relationship and some features are not enough before I am move t
 started on implementing deleting node add remove_node into repository_graph.py<br>
 Currently it removes nodes is possible, edge is not. Updated both remove node and edge is possible<br>
 ISSUE: when load the file, it loads the deleted node, no issues with deleted_edge<br>
+(7/13)<br>
+Continue from last issue here are today's todo list.<br>
+1. debug with Dante (x)
+2. fix the file load (x) it was self.graph.remove_node(node.node_id) line creating a problem. <br>
+3. coloring edge and label edge. (x) add the colors in canvas.py and updated ui <br>
+Heavist room I ever reached with podo 360K<br>
+After playing with this changes here are the things I am going to work on next few day. <br>
+1. add class node, and folder node, and external node
+2. Size up function, variable box
+3. arrow <-, <->
+4. safe guard add feature when there are same name, can't add
+5. zoom in, zoom out canvas
+6. node filtering(layer)
+Current status: satisfied with progress, but found uncomfortable part from tomorrow
+Tomorrow todo: 1,2,4 -> 3-> 5,6
