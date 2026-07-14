@@ -44,4 +44,10 @@ After playing with this changes here are the things I am going to work on next f
 5. zoom in, zoom out canvas
 6. node filtering(layer)
 Current status: satisfied with progress, but found uncomfortable part from tomorrow
-Tomorrow todo: 1,2,4 -> 3-> 5,6
+Tomorrow todo: 1,2,4 -> 3-> 5,6<br>
+(7/14)<br> 
+Todo List
+1. Debug with Dante(x)
+2. Add class, folder, external node(x)
+3. Size up function, variable box (x)
+4. safe guard add feature when there are same name, can't add(x)

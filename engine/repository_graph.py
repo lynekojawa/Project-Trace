@@ -63,7 +63,6 @@ class RepositoryGraph:
 
     def add_edge(self, source_id: str, target_id: str, relation_type: str) -> Optional[str]:
         """Establishes a directed logical edge vector between two verified workspace nodes"""
-        print(f"DEBUG: Graph checking existence -> Source:{source_id in self.nodes}, Target:{target_id in self.nodes}")
         if source_id not in self.nodes or target_id not in self.nodes:
             return None
 
@@ -83,9 +82,13 @@ class RepositoryGraph:
 
     def export_workspace(self, file_path: str) -> None:
         """Serializes the exact in-memory directed topological state tree out to disk."""
+        nodes_sorted = sorted(
+            self.nodes.values(),
+            key=lambda n: (0 if n.parent_id is None else 1)
+        )
         serialized_data = {
             "version": "1.0.0",
-            "nodes": [asdict(node) for node in self.nodes.values()],
+            "nodes": [asdict(node) for node in nodes_sorted],
             "edges": [asdict(edge) for edge in self.edges.values()]
         }
         with open(file_path, "w", encoding="utf-8") as out_file:
@@ -128,7 +131,6 @@ class RepositoryGraph:
             return False
 
     def remove_node(self, node_id: str) -> None:
-        print(f"DEBUG: RepositoryGraph.remove_node() called for ID: {node_id}")
         if node_id in self.hierarchy:
             children = list(self.hierarchy[node_id])
             for child_id in children:
@@ -151,9 +153,7 @@ class RepositoryGraph:
 
         if node_id in self.nodes:
             del self.nodes[node_id]
-            print(f"DEBUG: Successfully deleted node {node_id} from self.nodes")
-        else:
-            print(f"DEBUG: WARNING! Node {node_id} not found in self.nodes!")
+
 
     def remove_edge(self, source_id: str, target_id: str) -> bool:
         edge_lookup_key = f"{source_id} -> {target_id}"

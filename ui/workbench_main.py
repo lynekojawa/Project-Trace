@@ -99,7 +99,6 @@ class TraceWorkbench(QMainWindow):
         if prefix == "SAVE":
             filename = f"{argument}.json" if argument else "workspace.json"
             self.graph.export_workspace(filename)
-            print(f"DEBUG: Workspace saved to {filename}")
             return
 
         elif prefix == "LOAD":
@@ -108,7 +107,7 @@ class TraceWorkbench(QMainWindow):
                 self._hydrate_ui_from_graph()
             return
 
-        EDGE_RELATIONS = ["CALL", "IMPORT", "EXTERNAL", "READ", "WRITE", "CONNECT"]
+        EDGE_RELATIONS = ["CALL", "IMPORT", "EXTERNAL", "READ", "WRITE", "FLOW"]
         if prefix in EDGE_RELATIONS and  "->" in argument:
             source_name, target_name = argument.split("->", 1)
             self.canvas.spawn_edge(source_name.strip(), target_name.strip(), prefix)
@@ -118,14 +117,12 @@ class TraceWorkbench(QMainWindow):
             if argument.upper() == "ALL":
                 for node in list(self.canvas.node_registry.values()):
                     self.canvas._delete_node(node)
-                print("DEBUG: Workspace cleared.")
             else:
                 target_node = self.canvas._find_node_by_name(argument)
                 if target_node:
                     self.canvas._delete_node(target_node)
-                    print(f"DEBUG: Node '{argument}' deleted.")
-                else:
-                    print(f"DEBUG: Node '{argument}' not found.")
+                #else:
+                    #print(f"DEBUG: Node '{argument}' not found.")
         elif prefix == "DELETE_EDGE" and "->" in argument:
             source_id, target_id = argument.split("->", 1)
 
@@ -134,20 +131,30 @@ class TraceWorkbench(QMainWindow):
                     if item.source_node.name == source_id.strip() and \
                             item.target_node.name == target_id.strip():
                         self.canvas._delete_edge(item)
-                        print(f"DEBUG: Edge {source_id}->{target_id} deleted.")
             return
 
         target_type: Optional[NodeType] = None
-        if prefix == "FILE":
-            target_type = NodeType.FILE
-        elif prefix == "FUNC":
-            target_type = NodeType.FUNCTION
-        elif prefix == "VAR":
-            target_type = NodeType.VARIABLE
+        prefix_map = {
+            "FILE": NodeType.FILE,
+            "FOLDER": NodeType.FOLDER,
+            "CLASS": NodeType.CLASS,
+            "FUNCTION": NodeType.FUNCTION,
+            "FUNC" : NodeType.FUNCTION,
+            "VAR": NodeType.VARIABLE,
+            "EXTERNAL": NodeType.EXTERNAL,
+            "EXT": NodeType.EXTERNAL,
+        }
+        if prefix in prefix_map:
+            target_type = prefix_map[prefix]
 
         if target_type is not None:
+            existing = self.canvas._find_node_by_name(argument)
+            if existing:
+                self.statusBar().showMessage(f"Node '{argument}' already exists,", 3000)
+                return
             center_scene = self.view.mapToScene(self.view.viewport().rect().center())
             self.canvas.spawn_node(argument, target_type, center_scene.x(), center_scene.y())
+
 
 if __name__ == "__main__":
     shared_graph = RepositoryGraph()

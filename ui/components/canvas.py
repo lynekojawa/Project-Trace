@@ -10,8 +10,11 @@ from PySide6.QtGui import QPen, QBrush, QColor, QPainter
 
 class NodeType(Enum):
     FILE = auto()
+    FOLDER = auto()
+    CLASS = auto()
     FUNCTION = auto()
     VARIABLE = auto()
+    EXTERNAL = auto()
 
 class BlueprintNodeItem(QGraphicsRectItem):
     def __init__(self, node_id: str, name: str, node_type: NodeType, parent_item: Optional[QGraphicsItem] = None) -> None:
@@ -32,28 +35,37 @@ class BlueprintNodeItem(QGraphicsRectItem):
         #Visuals
         self.setPen(QPen(self._get_color_theme(), 2))
         self.setBrush(QBrush(QColor(25, 25, 35, 230)))
-
         self.label = QGraphicsTextItem(f"[{self.node_type.name}] {self.name}", self)
         self.label.setDefaultTextColor(QColor(230, 230, 235))
         self.label.setPos(6, 6)
 
+
+
     def _setup_geometry(self):
-        if self.node_type == NodeType.FILE:
-            self.setZValue(1.0);
-            self.setRect(0, 0, 240, 180)
-        elif self.node_type == NodeType.FUNCTION:
-            self.setZValue(2.0);
+        if self.node_type == NodeType.FOLDER:
             self.setRect(0, 0, 180, 60)
-        else:
-            self.setZValue(3.0);
-            self.setRect(0, 0, 140, 40)
+        elif self.node_type == NodeType.FILE:
+            self.setRect(0, 0, 500, 650)
+        elif self.node_type == NodeType.CLASS:
+            self.setRect(0, 0, 200, 100)
+        elif self.node_type == NodeType.FUNCTION:
+            self.setRect(0, 0, 160, 260)
+        elif self.node_type == NodeType.VARIABLE:
+            self.setRect(0, 0, 120, 40)
+        elif self.node_type == NodeType.EXTERNAL:
+            self.setRect(0, 0, 160, 60)
+
 
     def _get_color_theme(self) -> QColor:
-        if self.node_type == NodeType.FILE:
-            return QColor(41, 128, 185) #Blue
-        if self.node_type == NodeType.FUNCTION:
-            return QColor(39, 174, 96) #Green
-        return QColor(241, 196, 15) #Yellow
+        themes = {
+            NodeType.FOLDER: QColor(241, 196, 15), #Yellow
+            NodeType.FILE: QColor(41, 128, 185), #Blue
+            NodeType.CLASS: QColor(230, 126, 34), #White
+            NodeType.FUNCTION: QColor(46, 204, 113), #Green
+            NodeType.VARIABLE: QColor(236, 240, 241), #Cyan
+            NodeType.EXTERNAL: QColor(155, 89, 182), #Purple
+        }
+        return themes.get(self.node_type, QColor(200, 200, 200))
 
     def itemChange(self, change: QGraphicsItem.GraphicsItemChange, value: any) -> any:
         if change == QGraphicsItem.ItemPositionHasChanged and self.scene():
@@ -108,7 +120,7 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         "EXTERNAL": QColor(155, 89, 182), #Purple
         "READ": QColor(241, 196, 15), #Yellow
         "WRITE": QColor(241, 196, 15),
-        "CONNECT": QColor(255, 0, 0),
+        "FLOW": QColor(255, 0, 0),
     }
     def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem, relation_type: str) -> None:
         super().__init__()
@@ -121,13 +133,19 @@ class BlueprintEdgeItem(QGraphicsLineItem):
 
         self.setZValue(10.0)
 
+        self.relation_type = relation_type.upper()
+        self.label = QGraphicsTextItem(self.relation_type, self)
+
+        if self.relation_type =="FLOW":
+            self.label.setVisible(False)
+        else:
+            self.label.setVisible(True)
+            self.label.setDefaultTextColor(QColor(200, 200, 200))
+
+        color = self.RELATION_THEMES.get(relation_type, QColor(255, 0, 0))
+        self.setPen(QPen(color, 4, Qt.SolidLine))
         self.source_node.connected_edges.append(self)
         self.target_node.connected_edges.append(self)
-
-        self.label = QGraphicsTextItem(self.relation_type, self)
-        self.label.setDefaultTextColor(QColor(200, 200, 200))
-        color = self.RELATION_THEMES.get(relation_type, QColor(200, 200, 200))
-        self.setPen(QPen(color, 4, Qt.SolidLine))
         self.update_position()
 
     def update_position(self) -> None:
@@ -135,14 +153,15 @@ class BlueprintEdgeItem(QGraphicsLineItem):
             return
         if not hasattr(self, 'label'):
             return
+
         p1 = self.source_node.scenePos() + self.source_node.rect().center()
         p2 = self.target_node.scenePos() + self.target_node.rect().center()
-        print(f"DEBUG: Edge {self.edge_id} -> P1:{p1.x()},{p1.y()} to P2:{p2.x()},{p2.y()}")
         self.setLine(p1.x(), p1.y(), p2.x(), p2.y())
 
-        mid_x = (p1.x() + p2.x()) / 2
-        mid_y = (p1.y() + p2.y()) / 2
-        self.label.setPos(mid_x, mid_y)
+        if self.label.isVisible():
+            mid_x = (p1.x() + p2.x()) / 2
+            mid_y = (p1.y() + p2.y()) / 2
+            self.label.setPos(mid_x, mid_y)
 
 class ManualWorkbenchCanvas(QGraphicsScene):
     def __init__(self, graph_instance: RepositoryGraph, parent: Optional[object] = None) -> None:
@@ -162,11 +181,13 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         super().keyPressEvent(event)
 
     def _delete_node(self, node: BlueprintNodeItem):
-        self.graph.remove_node(node.node_id)
+        #remove connected visuals first
+        for edge in list(node.connected_edges):
+            self._delete_edge(edge)
 
+        self.graph.remove_node(node.node_id)
         if node.node_id in self.node_registry:
             del self.node_registry[node.node_id]
-
         self.removeItem(node)
 
     def _delete_edge(self, edge: BlueprintEdgeItem):
@@ -182,13 +203,11 @@ class ManualWorkbenchCanvas(QGraphicsScene):
     def spawn_node(self, name: str, node_type: NodeType, x: float = 0.0, y: float = 0.0) -> BlueprintNodeItem:
 
         node_id = self.graph.add_node(name, node_type.name, x, y)
-        print(f"DEBUG: Graph created node {name} with ID: {node_id}")
 
         node = BlueprintNodeItem(node_id, name, node_type)
         node.setPos(x, y)
         self.addItem(node)
         self.node_registry[node_id] = node
-        print(f"DEBUG: Current registry keys: {list(self.node_registry.keys())}")
         return node
 
     def spawn_edge(self, source_name: str, target_name: str, relation_type: str = "CALL") -> Optional[BlueprintEdgeItem]:
@@ -197,10 +216,8 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         target_item = self._find_node_by_name(target_name)
 
         if not source_item or not target_item:
-            print(f"DEBUG: FAILED! Found Source: {bool(source_item)}, Found Target: {bool(target_item)}")
             return None
 
-        print(f"DEBUG: Trying to link {source_name}({source_item.node_id}) -> {target_name}({target_item.node_id})")
 
         edge_id = self.graph.add_edge(source_item.node_id, target_item.node_id, relation_type)
         if not edge_id: return None
