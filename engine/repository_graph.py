@@ -17,7 +17,8 @@ class EdgeState:
     edge_id: str
     source_id: str
     target_id: str
-    relation_type: str # "CALL", "IMPORT", "READ", "WRITE"
+    relation_type: str # "CALL", "IMPORT", "READ", "WRITE", "FLOW", "EXTERNAL"
+    is_bidirectional: bool = False
 
 class RepositoryGraph:
     def __init__(self) -> None:

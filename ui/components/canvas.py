@@ -1,12 +1,13 @@
+import math
 from enum import Enum, auto
 from typing import Dict, List, Optional
 from engine.repository_graph import RepositoryGraph
-from PySide6.QtCore import Qt, QRectF
+from PySide6.QtCore import Qt, QRectF, QPointF
 from PySide6.QtWidgets import (
     QGraphicsScene, QGraphicsRectItem, QGraphicsTextItem,
     QGraphicsItem, QGraphicsSceneMouseEvent, QGraphicsLineItem,
 )
-from PySide6.QtGui import QPen, QBrush, QColor, QPainter
+from PySide6.QtGui import QPen, QBrush, QColor, QPainter, QPolygonF
 
 class NodeType(Enum):
     FILE = auto()
@@ -163,11 +164,43 @@ class BlueprintEdgeItem(QGraphicsLineItem):
             mid_y = (p1.y() + p2.y()) / 2
             self.label.setPos(mid_x, mid_y)
 
+    def paint(self, painter, option, widget=None):
+        painter.setPen(self.pen())
+        line = self.line()
+        painter.drawLine(line)
+        if line.isNull(): return
+
+        arrow_size = 15
+        angle = math.atan2(-line.dy(), line.dx())
+        #p1: depart, p2: end
+        painter.setBrush(self.pen().color())
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        p2_head = QPolygonF([
+            line.p2(),
+            line.p2() - QPointF(math.sin(angle + math.pi / 6) * arrow_size,
+                                math.cos(angle + math.pi / 6) * arrow_size),
+            line.p2() - QPointF(math.sin(angle - math.pi + math.pi / 6) * arrow_size,
+                                math.cos(angle - math.pi + math.pi / 6) * arrow_size)
+        ])
+
+        painter.drawPolygon(p2_head)
+
+        if self.is_bidirectional:
+            p1_head = QPolygonF([
+                line.p1(),
+                line.p1() + QPointF(math.sin(angle - math.pi / 3) * arrow_size,
+                                    math.cos(angle - math.pi / 3) * arrow_size),
+                line.p1() + QPointF(math.sin(angle - math.pi + math.pi / 3) * arrow_size,
+                                    math.cos(angle - math.pi + math.pi / 3) * arrow_size)
+            ])
+            painter.drawPolygon(p1_head)
+
 class ManualWorkbenchCanvas(QGraphicsScene):
     def __init__(self, graph_instance: RepositoryGraph, parent: Optional[object] = None) -> None:
         super().__init__(parent)
         self.graph = graph_instance
-        self.setSceneRect(-1000, -1000, 2000, 2000)
+        self.setSceneRect(-5000, -5000, 10000, 10000)
         self.setBackgroundBrush((QColor(15, 15, 20)))
         self.node_registry: Dict[str, BlueprintNodeItem] = {}
 

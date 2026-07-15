@@ -40,7 +40,7 @@ After playing with this changes here are the things I am going to work on next f
 1. add class node, and folder node, and external node
 2. Size up function, variable box
 3. arrow <-, <->
-4. safe guard add feature when there are same name, can't add
+4. safeguard add feature when there are same name, can't add
 5. zoom in, zoom out canvas
 6. node filtering(layer)
 Current status: satisfied with progress, but found uncomfortable part from tomorrow
@@ -51,3 +51,10 @@ Todo List
 2. Add class, folder, external node(x)
 3. Size up function, variable box (x)
 4. safe guard add feature when there are same name, can't add(x)
+(7/15)<br>
+FIXED CLASS NODE OFF positioning when load the file: child_item.setPos(parent_item.mapFromScene(node.x, node.y))<br>
+Changed above code into child_item.setPos(node.x, node.y), somehow this converts and reconverts and this masses the position up, <br> 
+Todo List
+1. Zoom in, Zoom out(x)
+2. arrow( Progress, updated engine, canvas, workbench -/ is the how arrow looks like <-> doesn't appear, debug needed)<br> 
+3. node filtering

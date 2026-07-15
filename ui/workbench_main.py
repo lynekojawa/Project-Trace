@@ -1,11 +1,11 @@
 import sys
 from typing import Optional
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QEvent
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QGraphicsView,
     QLineEdit, QLabel, QHBoxLayout, QApplication
 )
-from PySide6.QtGui import QPainter, QTransform
+from PySide6.QtGui import QPainter
 from engine.repository_graph import RepositoryGraph
 from ui.components.canvas import ManualWorkbenchCanvas, NodeType, BlueprintNodeItem, BlueprintEdgeItem
 
@@ -50,6 +50,28 @@ class TraceWorkbench(QMainWindow):
 
         main_layout.addWidget(palette_container)
 
+        self.view.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+        self.view.setResizeAnchor(QGraphicsView.AnchorUnderMouse)
+        self.view.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        self.view.viewport().installEventFilter(self)
+        self.view.setDragMode(QGraphicsView.ScrollHandDrag)
+
+    def eventFilter(self, source, event):
+        if source == self.view.viewport() and event.type() == QEvent.Wheel:
+            zoom_in_factor = 1.25
+            zoom_out_factor = 1 / zoom_in_factor
+
+            if event.angleDelta().y() > 0:
+                self.view.scale(zoom_in_factor, zoom_in_factor)
+            else:
+                self.view.scale(zoom_out_factor, zoom_out_factor)
+            return True
+        return super().eventFilter(source, event)
+
+
+
     def _hydrate_ui_from_graph(self) -> None:
         """Fully restores graph topology from the backend model."""
         self.canvas.blockSignals(True)
@@ -68,7 +90,7 @@ class TraceWorkbench(QMainWindow):
                 child_item = self.canvas.node_registry[node_id]
                 parent_item = self.canvas.node_registry[node.parent_id]
                 child_item.setParentItem(parent_item)
-                child_item.setPos(parent_item.mapFromScene(node.x, node.y))
+                child_item.setPos(node.x, node.y)
 
         for edge_id, edge in self.graph.edges.items():
             source_item = self.canvas.node_registry.get(edge.source_id)
@@ -108,9 +130,12 @@ class TraceWorkbench(QMainWindow):
             return
 
         EDGE_RELATIONS = ["CALL", "IMPORT", "EXTERNAL", "READ", "WRITE", "FLOW"]
-        if prefix in EDGE_RELATIONS and  "->" in argument:
-            source_name, target_name = argument.split("->", 1)
-            self.canvas.spawn_edge(source_name.strip(), target_name.strip(), prefix)
+        if prefix in EDGE_RELATIONS and  ("->" in argument or "<->" in argument):
+            is_bidi = "<->" in argument
+            delimiter = "<->" if is_bidi else "<->"
+
+            source_name, target_name = argument.split(delimiter, 1)
+            self.canvas.spawn_edge(source_name.strip(), target_name.strip(), prefix, is_bidirectional = is_bidi)
             return
 
         elif prefix == "DELETE":
