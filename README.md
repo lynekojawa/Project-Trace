@@ -58,3 +58,9 @@ Todo List
 1. Zoom in, Zoom out(x)
 2. arrow( Progress, updated engine, canvas, workbench -/ is the how arrow looks like <-> doesn't appear, debug needed)<br> 
 3. node filtering
+(7/20)<<br>
+Continuing on project todo list:
+1. Arrow: triangle issue resolved it is now looking like ->, the problem wasfrom polygone it is now changed <br>
+Working on bidirectional <-> it is lost from somewhere but not sure. a minor tracks n all the edge_item<br>
+updated workbench to delete <-> edge. <br>
+2. Node filtering

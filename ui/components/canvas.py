@@ -123,7 +123,7 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         "WRITE": QColor(241, 196, 15),
         "FLOW": QColor(255, 0, 0),
     }
-    def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem, relation_type: str) -> None:
+    def __init__(self, edge_id: str, source: BlueprintNodeItem, target: BlueprintNodeItem, relation_type: str, is_bidirectional = False) -> None:
         super().__init__()
         self.edge_id = edge_id
         self.source_node = source
@@ -147,7 +147,9 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         self.setPen(QPen(color, 4, Qt.SolidLine))
         self.source_node.connected_edges.append(self)
         self.target_node.connected_edges.append(self)
+        self.is_bidirectional = is_bidirectional
         self.update_position()
+        print(f"DEBUG: Edge {edge_id} is_bidirectional={self.is_bidirectional}")
 
     def update_position(self) -> None:
         if not self.source_node or not self.target_node:
@@ -170,31 +172,27 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         painter.drawLine(line)
         if line.isNull(): return
 
-        arrow_size = 15
+        arrow_size = 30
         angle = math.atan2(-line.dy(), line.dx())
         #p1: depart, p2: end
-        painter.setBrush(self.pen().color())
-        painter.setRenderHint(QPainter.Antialiasing)
 
-        p2_head = QPolygonF([
-            line.p2(),
-            line.p2() - QPointF(math.sin(angle + math.pi / 6) * arrow_size,
-                                math.cos(angle + math.pi / 6) * arrow_size),
-            line.p2() - QPointF(math.sin(angle - math.pi + math.pi / 6) * arrow_size,
-                                math.cos(angle - math.pi + math.pi / 6) * arrow_size)
-        ])
+        arm1 = QPointF(math.cos(angle - math.pi + math.pi / 6) * arrow_size,
+                       -math.sin(angle - math.pi + math.pi / 6) * arrow_size)
+        arm2 = QPointF(math.cos(angle - math.pi - math.pi / 6) * arrow_size,
+                       -math.sin(angle - math.pi - math.pi / 6) * arrow_size)
 
-        painter.drawPolygon(p2_head)
+        painter.setBrush(Qt.NoBrush)
+        painter.drawLine(line.p2(), line.p2() + arm1)
+        painter.drawLine(line.p2(), line.p2() + arm2)
 
         if self.is_bidirectional:
-            p1_head = QPolygonF([
-                line.p1(),
-                line.p1() + QPointF(math.sin(angle - math.pi / 3) * arrow_size,
-                                    math.cos(angle - math.pi / 3) * arrow_size),
-                line.p1() + QPointF(math.sin(angle - math.pi + math.pi / 3) * arrow_size,
-                                    math.cos(angle - math.pi + math.pi / 3) * arrow_size)
-            ])
-            painter.drawPolygon(p1_head)
+            arm1 = QPointF(math.cos(angle + math.pi / 6) * arrow_size,
+                           -math.sin(angle + math.pi / 6) * arrow_size)
+            arm2 = QPointF(math.cos(angle - math.pi / 6) * arrow_size,
+                           -math.sin(angle - math.pi / 6) * arrow_size)
+
+            painter.drawLine(line.p1(), line.p1() + arm1)
+            painter.drawLine(line.p1(), line.p1() + arm2)
 
 class ManualWorkbenchCanvas(QGraphicsScene):
     def __init__(self, graph_instance: RepositoryGraph, parent: Optional[object] = None) -> None:
@@ -243,7 +241,7 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         self.node_registry[node_id] = node
         return node
 
-    def spawn_edge(self, source_name: str, target_name: str, relation_type: str = "CALL") -> Optional[BlueprintEdgeItem]:
+    def spawn_edge(self, source_name: str, target_name: str, relation_type: str = "CALL", is_bidirectional = False) -> Optional[BlueprintEdgeItem]:
 
         source_item = self._find_node_by_name(source_name)
         target_item = self._find_node_by_name(target_name)
@@ -255,7 +253,7 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         edge_id = self.graph.add_edge(source_item.node_id, target_item.node_id, relation_type)
         if not edge_id: return None
 
-        edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, relation_type)
+        edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, relation_type, is_bidirectional)
 
         self.addItem(edge_item)
         return edge_item

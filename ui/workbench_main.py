@@ -97,7 +97,7 @@ class TraceWorkbench(QMainWindow):
             target_item = self.canvas.node_registry.get(edge.target_id)
 
             if source_item and target_item:
-                edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, edge.relation_type)
+                edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, edge.relation_type, edge.is_bidirectional)
                 self.canvas.addItem(edge_item)
 
         self.canvas.blockSignals(False)
@@ -132,7 +132,7 @@ class TraceWorkbench(QMainWindow):
         EDGE_RELATIONS = ["CALL", "IMPORT", "EXTERNAL", "READ", "WRITE", "FLOW"]
         if prefix in EDGE_RELATIONS and  ("->" in argument or "<->" in argument):
             is_bidi = "<->" in argument
-            delimiter = "<->" if is_bidi else "<->"
+            delimiter = "<->" if is_bidi else "->"
 
             source_name, target_name = argument.split(delimiter, 1)
             self.canvas.spawn_edge(source_name.strip(), target_name.strip(), prefix, is_bidirectional = is_bidi)
@@ -148,8 +148,9 @@ class TraceWorkbench(QMainWindow):
                     self.canvas._delete_node(target_node)
                 #else:
                     #print(f"DEBUG: Node '{argument}' not found.")
-        elif prefix == "DELETE_EDGE" and "->" in argument:
-            source_id, target_id = argument.split("->", 1)
+        elif prefix == "DELETE_EDGE" and ("->" in argument or "<->" in argument):
+            delimiter = "<->" if "<->" in argument else "->"
+            source_id, target_id = argument.split(delimiter, 1)
 
             for item in self.canvas.items():
                 if isinstance(item, BlueprintEdgeItem):

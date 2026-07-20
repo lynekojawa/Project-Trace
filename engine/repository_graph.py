@@ -26,7 +26,6 @@ class RepositoryGraph:
         self.edges: Dict[str, EdgeState] = {}
         self.hierarchy: Dict[str, Set[str]] = {}
 
-
     def add_node(self, name: str, node_type: str, x:float = 0.0, y: float = 0.0, preset_id: Optional[str]=None) -> str:
         """Generates an identity record. Accepts a preset_id strictly for persistence tracking."""
         node_id = preset_id if preset_id else str(uuid.uuid4())
@@ -62,7 +61,7 @@ class RepositoryGraph:
 
         return True
 
-    def add_edge(self, source_id: str, target_id: str, relation_type: str) -> Optional[str]:
+    def add_edge(self, source_id: str, target_id: str, relation_type: str, is_bidirectional = False) -> Optional[str]:
         """Establishes a directed logical edge vector between two verified workspace nodes"""
         if source_id not in self.nodes or target_id not in self.nodes:
             return None

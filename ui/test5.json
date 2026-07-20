@@ -13,16 +13,16 @@
             "node_id": "8d1f291f-7733-417a-bb92-3613573ad8ae",
             "name": "a.py",
             "node_type": "FILE",
-            "x": -355.0,
-            "y": -46.0,
+            "x": -370.625,
+            "y": -73.734375,
             "parent_id": null
         },
         {
             "node_id": "166236aa-48f7-45ab-ad77-1ec55facc6af",
             "name": "c",
             "node_type": "FUNCTION",
-            "x": -589.0,
-            "y": 208.0,
+            "x": -577.28125,
+            "y": 235.34374999999994,
             "parent_id": null
         },
         {
@@ -61,8 +61,8 @@
             "node_id": "e7bde6b8-f303-4934-97e6-0c784c096506",
             "name": "hey",
             "node_type": "FUNCTION",
-            "x": -585.0,
-            "y": 494.0,
+            "x": -692.421875,
+            "y": 560.4062499999998,
             "parent_id": null
         },
         {
@@ -85,16 +85,24 @@
             "node_id": "e511ba4a-ad8e-467e-a29e-0f073050d206",
             "name": "engine",
             "node_type": "FOLDER",
-            "x": 335.0,
-            "y": -211.0,
+            "x": 474.71875,
+            "y": -293.390625,
+            "parent_id": null
+        },
+        {
+            "node_id": "9e347830-7f96-40bc-a8b3-85903bce9214",
+            "name": "supabase",
+            "node_type": "EXTERNAL",
+            "x": 128.0,
+            "y": -174.0,
             "parent_id": null
         },
         {
             "node_id": "44c3ff79-2cb3-4e58-bf3e-2da729304458",
             "name": "d",
             "node_type": "CLASS",
-            "x": 16.0,
-            "y": 523.0,
+            "x": 111.70312499999994,
+            "y": 478.078125,
             "parent_id": "8d1f291f-7733-417a-bb92-3613573ad8ae"
         },
         {
@@ -109,53 +117,67 @@
             "node_id": "d63d6163-aebf-48b1-bb22-56200ddd509c",
             "name": "how",
             "node_type": "CLASS",
-            "x": 61.0,
-            "y": 53.0,
+            "x": 94.20312499999994,
+            "y": 424.09374999999983,
             "parent_id": "a6bd6187-583c-4fbd-b03c-dca844aef2a7"
         }
     ],
     "edges": [
         {
-            "edge_id": "19922070-db0b-456f-b5e7-9052b7d29a20",
+            "edge_id": "81e6e5f7-6105-4e81-8331-79d3709184c8",
             "source_id": "bd70ed64-c623-4f35-9721-7e75c7967bd6",
             "target_id": "8d1f291f-7733-417a-bb92-3613573ad8ae",
-            "relation_type": "FLOW"
+            "relation_type": "FLOW",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "edbdd5b7-8ce5-4aa3-b5aa-7e7a4de4afab",
+            "edge_id": "2527ddf7-2206-4773-8209-3187c0cc1bfb",
             "source_id": "44c3ff79-2cb3-4e58-bf3e-2da729304458",
             "target_id": "166236aa-48f7-45ab-ad77-1ec55facc6af",
-            "relation_type": "FLOW"
+            "relation_type": "FLOW",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "a2a31dd9-a73c-4980-a2f8-06c382c75e1c",
+            "edge_id": "176d9277-cf75-4d56-9c5c-afc7e9a9abc7",
             "source_id": "3a5adbf8-a89c-44ee-9dde-5a25a47d2d4a",
             "target_id": "79836d62-6214-4146-9c2d-c4a1dcae67ad",
-            "relation_type": "FLOW"
+            "relation_type": "FLOW",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "b3d3e061-53a9-4607-9afb-5f3eb852c70a",
+            "edge_id": "8bf3cab4-a5eb-4f79-9668-9d7ea5dcbdeb",
             "source_id": "44c3ff79-2cb3-4e58-bf3e-2da729304458",
             "target_id": "e7bde6b8-f303-4934-97e6-0c784c096506",
-            "relation_type": "FLOW"
+            "relation_type": "FLOW",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "641ad724-5c8d-4cd4-84ac-401f2cdb6a8d",
+            "edge_id": "12676b59-e8dc-4aa7-92ad-e7902994dbc4",
             "source_id": "79836d62-6214-4146-9c2d-c4a1dcae67ad",
             "target_id": "d087bc96-3da6-4914-a0e3-0b51fd485a79",
-            "relation_type": "IMPORT"
+            "relation_type": "IMPORT",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "92a28671-b019-4c51-a8f2-b99c84c54f20",
+            "edge_id": "3d5be74b-74b6-4d5b-a0e6-5957c7568db3",
             "source_id": "d63d6163-aebf-48b1-bb22-56200ddd509c",
             "target_id": "8d1f291f-7733-417a-bb92-3613573ad8ae",
-            "relation_type": "IMPORT"
+            "relation_type": "IMPORT",
+            "is_bidirectional": false
         },
         {
-            "edge_id": "5208a1c0-4f7e-4eaf-9477-6392b699f2c5",
+            "edge_id": "6e88d4a9-e65a-4957-99c3-710700726de0",
             "source_id": "e511ba4a-ad8e-467e-a29e-0f073050d206",
             "target_id": "a6bd6187-583c-4fbd-b03c-dca844aef2a7",
-            "relation_type": "FLOW"
+            "relation_type": "FLOW",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "6aeedf2d-5672-407f-9f19-01e92bf19479",
+            "source_id": "9e347830-7f96-40bc-a8b3-85903bce9214",
+            "target_id": "e511ba4a-ad8e-467e-a29e-0f073050d206",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
         }
     ]
 }
