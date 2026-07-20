@@ -250,7 +250,7 @@ class ManualWorkbenchCanvas(QGraphicsScene):
             return None
 
 
-        edge_id = self.graph.add_edge(source_item.node_id, target_item.node_id, relation_type)
+        edge_id = self.graph.add_edge(source_item.node_id, target_item.node_id, relation_type, is_bidirectional)
         if not edge_id: return None
 
         edge_item = BlueprintEdgeItem(edge_id, source_item, target_item, relation_type, is_bidirectional)

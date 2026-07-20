@@ -181,6 +181,28 @@ class TraceWorkbench(QMainWindow):
             center_scene = self.view.mapToScene(self.view.viewport().rect().center())
             self.canvas.spawn_node(argument, target_type, center_scene.x(), center_scene.y())
 
+        if prefix == "HIDE" or prefix == "SHOW":
+            target_visible = (prefix == "SHOW")
+            filter_target = argument.upper().strip()
+
+            if filter_target in prefix_map or filter_target == "ALL":
+                target_node_type = prefix_map.get(filter_target)
+
+                for node_item in self.canvas.node_registry.values():
+                    if filter_target == "ALL" or node_item.node_type == target_node_type:
+                        node_item.setVisible(target_visible)
+                        for edge in node_item.connected_edges:
+                            edge.setVisible(target_visible)
+
+            if filter_target in EDGE_RELATIONS or filter_target == "ALL_EDGES":
+                for item in self.canvas.items():
+                    if isinstance(item, BlueprintEdgeItem):
+                        if filter_target == "ALL_EDGES" or item.relation_type == filter_target:
+                            item.setVisible(target_visible)
+
+            self.statusBar().showMessage(f"Vision Filter: {prefix} {filter_target}", 2000)
+            return
+
 
 if __name__ == "__main__":
     shared_graph = RepositoryGraph()

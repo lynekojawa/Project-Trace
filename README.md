@@ -63,4 +63,9 @@ Continuing on project todo list:
 1. Arrow: triangle issue resolved it is now looking like ->, the problem wasfrom polygone it is now changed <br>
 Working on bidirectional <-> it is lost from somewhere but not sure. a minor tracks n all the edge_item<br>
 updated workbench to delete <-> edge. <br>
-2. Node filtering
+Gyaaaaaa, when I load my file <-> isn't load as it is, it loads as -> whyyyyyy<br>
+it was same pattern... I missed is bi_directional, this is why updating a feature harder than creating from scratch<br>
+all those little things to track... :)
+2. Node filtering-done!<br>
+Tomorrow I am planning to debug or scan with Dante for last time, and create an example output, then deploy.<br>
+My friend is asking me to make one in her version: English dep version, will update the nodes and edges and packaging for her<br>

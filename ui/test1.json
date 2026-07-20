@@ -1,0 +1,30 @@
+{
+    "version": "1.0.0",
+    "nodes": [
+        {
+            "node_id": "d3a5a819-9ec6-44c7-8c4d-8251de4d49a8",
+            "name": "a.py",
+            "node_type": "FILE",
+            "x": -85.0,
+            "y": -205.0,
+            "parent_id": null
+        },
+        {
+            "node_id": "97b9f20b-3a83-4287-8156-2d133edbae7b",
+            "name": "b",
+            "node_type": "FUNCTION",
+            "x": -433.0,
+            "y": -161.0,
+            "parent_id": null
+        }
+    ],
+    "edges": [
+        {
+            "edge_id": "f31ba180-06e8-49cd-ac1a-acae701aa58b",
+            "source_id": "97b9f20b-3a83-4287-8156-2d133edbae7b",
+            "target_id": "d3a5a819-9ec6-44c7-8c4d-8251de4d49a8",
+            "relation_type": "CALL",
+            "is_bidirectional": true
+        }
+    ]
+}

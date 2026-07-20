@@ -76,11 +76,14 @@ class RepositoryGraph:
             edge_id=edge_id,
             source_id=source_id,
             target_id=target_id,
-            relation_type=relation_type
+            relation_type=relation_type,
+            is_bidirectional = is_bidirectional
         )
         return edge_id
 
     def export_workspace(self, file_path: str) -> None:
+        for edge in self.edges.values():
+            print(f"DEBUG SAVE: {edge.relation_type} is_bidirectional={edge.is_bidirectional}")
         """Serializes the exact in-memory directed topological state tree out to disk."""
         nodes_sorted = sorted(
             self.nodes.values(),
@@ -124,7 +127,8 @@ class RepositoryGraph:
                 self.add_edge(
                     source_id=edge_raw["source_id"],
                     target_id=edge_raw["target_id"],
-                    relation_type=edge_raw["relation_type"]
+                    relation_type=edge_raw["relation_type"],
+                    is_bidirectional = edge_raw.get("is_bidirectional", False)
                 )
             return True
         except (FileNotFoundError, json.JSONDecodeError, KeyError):
