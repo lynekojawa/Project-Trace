@@ -1,0 +1,452 @@
+{
+    "version": "1.0.0",
+    "nodes": [
+        {
+            "node_id": "1d5ebc83-c853-4106-bd44-79f3bc56b1b1",
+            "name": "app.py",
+            "node_type": "FILE",
+            "x": -711.6523437500002,
+            "y": -1504.05859375,
+            "parent_id": null
+        },
+        {
+            "node_id": "437dbe72-0b90-417a-acf2-a376e45ec969",
+            "name": "cipher_engine.py",
+            "node_type": "FILE",
+            "x": -1566.47796875,
+            "y": -1108.4774999999997,
+            "parent_id": null
+        },
+        {
+            "node_id": "02044ac4-5b42-462c-b1dc-eb181753f882",
+            "name": "db_manager.py",
+            "node_type": "FILE",
+            "x": 201.171875,
+            "y": -1120.3124999999995,
+            "parent_id": null
+        },
+        {
+            "node_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "name": "supabase",
+            "node_type": "EXTERNAL",
+            "x": -148.08984375000003,
+            "y": -227.0156249999996,
+            "parent_id": null
+        },
+        {
+            "node_id": "9ddbe982-d55d-407b-ab78-c9d8ca2ab292",
+            "name": "streamlit",
+            "node_type": "EXTERNAL",
+            "x": -496.8199999999997,
+            "y": -1657.4099999999994,
+            "parent_id": null
+        },
+        {
+            "node_id": "a7941411-06ac-4af3-b5b9-dad7b24fe3cf",
+            "name": "register_profile",
+            "node_type": "FUNCTION",
+            "x": -124.76000000000016,
+            "y": -877.8525000000001,
+            "parent_id": null
+        },
+        {
+            "node_id": "77e09c6f-c821-4d98-9d3c-40f034e23754",
+            "name": "upload_message",
+            "node_type": "FUNCTION",
+            "x": 321.8900000000002,
+            "y": -451.7375,
+            "parent_id": null
+        },
+        {
+            "node_id": "ad542016-0044-497d-81df-739fccb6bce5",
+            "name": "fetch_message",
+            "node_type": "FUNCTION",
+            "x": 361.340625,
+            "y": -72.05937500000007,
+            "parent_id": null
+        },
+        {
+            "node_id": "c6067776-5313-4e4b-9238-b503c3e0fec2",
+            "name": "fetch_profile",
+            "node_type": "FUNCTION",
+            "x": 766.0,
+            "y": -540.0,
+            "parent_id": null
+        },
+        {
+            "node_id": "cdf373a8-dd31-41ba-81a4-06d1acf2dc93",
+            "name": "delete_message",
+            "node_type": "FUNCTION",
+            "x": -24.874999999999773,
+            "y": -29.000000000000114,
+            "parent_id": null
+        },
+        {
+            "node_id": "22f13967-9810-4816-b36d-15febf483765",
+            "name": "fetch_targeted_message",
+            "node_type": "FUNCTION",
+            "x": 818.5000000000001,
+            "y": -199.4375,
+            "parent_id": null
+        },
+        {
+            "node_id": "b5456897-cc3d-453c-bdae-8a835640a60c",
+            "name": "encrypt_key",
+            "node_type": "FUNCTION",
+            "x": -1111.1021874999994,
+            "y": -378.00249999999994,
+            "parent_id": null
+        },
+        {
+            "node_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345",
+            "name": "decrypt_key",
+            "node_type": "FUNCTION",
+            "x": -977.2281249999994,
+            "y": -721.8684375000003,
+            "parent_id": null
+        },
+        {
+            "node_id": "bbaf3ac1-0a53-459a-9287-058081f83969",
+            "name": "apply_caesar",
+            "node_type": "FUNCTION",
+            "x": -679.3773046875003,
+            "y": 220.3805859375001,
+            "parent_id": null
+        },
+        {
+            "node_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536",
+            "name": "send_message",
+            "node_type": "FUNCTION",
+            "x": -1128.0649609375,
+            "y": 147.21945312500006,
+            "parent_id": null
+        },
+        {
+            "node_id": "ba81797b-b89e-4190-97da-1d7c844366e4",
+            "name": "receive_message",
+            "node_type": "FUNCTION",
+            "x": -393.8580859374999,
+            "y": 211.1768359374999,
+            "parent_id": null
+        },
+        {
+            "node_id": "6884367d-90e5-4aa2-aeb1-e77dd42a0c65",
+            "name": "session_shift",
+            "node_type": "VARIABLE",
+            "x": -333.47500000000025,
+            "y": -491.5796874999996,
+            "parent_id": null
+        },
+        {
+            "node_id": "bfa4fe2b-fbb4-4f84-85cc-3b12d956317b",
+            "name": "DBManager",
+            "node_type": "CLASS",
+            "x": 29.6875,
+            "y": 40.62499999999994,
+            "parent_id": "02044ac4-5b42-462c-b1dc-eb181753f882"
+        },
+        {
+            "node_id": "5a259c93-7b47-431e-8dee-a111fce51271",
+            "name": "extended_gcd",
+            "node_type": "FUNCTION",
+            "x": 1.2890625,
+            "y": 174.44921875,
+            "parent_id": "437dbe72-0b90-417a-acf2-a376e45ec969"
+        },
+        {
+            "node_id": "d7c8e526-2cb3-4bab-b8b0-f5aff144c3ab",
+            "name": "mod_inverse",
+            "node_type": "FUNCTION",
+            "x": 195.9375,
+            "y": 169.125,
+            "parent_id": "437dbe72-0b90-417a-acf2-a376e45ec969"
+        },
+        {
+            "node_id": "5f5a9b23-6255-4d6a-8b8b-df9899666563",
+            "name": "generate_keypair",
+            "node_type": "FUNCTION",
+            "x": -137.3125,
+            "y": 634.0625,
+            "parent_id": "437dbe72-0b90-417a-acf2-a376e45ec969"
+        },
+        {
+            "node_id": "7a0685ac-e4dd-4490-9dd2-e46498b503c4",
+            "name": "CryptoEngine",
+            "node_type": "CLASS",
+            "x": 226.67449999999974,
+            "y": 37.5173749999999,
+            "parent_id": "437dbe72-0b90-417a-acf2-a376e45ec969"
+        },
+        {
+            "node_id": "0ac27029-e846-41e0-ad9c-877609d3f12c",
+            "name": "private_key",
+            "node_type": "VARIABLE",
+            "x": 13.784999999999627,
+            "y": 47.824374999999975,
+            "parent_id": "5f5a9b23-6255-4d6a-8b8b-df9899666563"
+        },
+        {
+            "node_id": "a17fa93a-6a97-42a7-9ae6-24628a1918db",
+            "name": "public_key",
+            "node_type": "VARIABLE",
+            "x": 18.58499999999981,
+            "y": 106.22437500000001,
+            "parent_id": "5f5a9b23-6255-4d6a-8b8b-df9899666563"
+        },
+        {
+            "node_id": "4198aace-b4bc-44fb-9bc0-8fcc36de8300",
+            "name": "c1",
+            "node_type": "VARIABLE",
+            "x": 17.984999999999673,
+            "y": 55.6243750000001,
+            "parent_id": "b5456897-cc3d-453c-bdae-8a835640a60c"
+        },
+        {
+            "node_id": "610467f4-df5d-44c4-9e8c-2e40ca7960f3",
+            "name": "c2",
+            "node_type": "VARIABLE",
+            "x": 26.384999999999764,
+            "y": 175.22437500000012,
+            "parent_id": "b5456897-cc3d-453c-bdae-8a835640a60c"
+        },
+        {
+            "node_id": "f3ffb243-bdd5-4fac-9c85-e90e29ed1214",
+            "name": "shared_message",
+            "node_type": "VARIABLE",
+            "x": 41.0187499999995,
+            "y": 198.50124999999997,
+            "parent_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345"
+        },
+        {
+            "node_id": "f58588cb-5803-4983-8e0c-6eddcda6b666",
+            "name": "ciphertext",
+            "node_type": "VARIABLE",
+            "x": 26.219257812500246,
+            "y": 174.91433593749997,
+            "parent_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536"
+        },
+        {
+            "node_id": "9ac3f87f-1354-4ca6-9bf7-202eb6f35d2b",
+            "name": "plaintext",
+            "node_type": "VARIABLE",
+            "x": 24.417500000000473,
+            "y": 40.38796875000017,
+            "parent_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536"
+        },
+        {
+            "node_id": "b5f5f1e2-8e27-486a-95be-f58b61beb4c1",
+            "name": "username",
+            "node_type": "VARIABLE",
+            "x": 21.560000000000173,
+            "y": 44.24000000000001,
+            "parent_id": "a7941411-06ac-4af3-b5b9-dad7b24fe3cf"
+        },
+        {
+            "node_id": "46bf0614-9017-4177-83bb-9d85354b6c6a",
+            "name": "self.client",
+            "node_type": "VARIABLE",
+            "x": 20.759999999999764,
+            "y": 97.83999999999986,
+            "parent_id": "a7941411-06ac-4af3-b5b9-dad7b24fe3cf"
+        },
+        {
+            "node_id": "185fc7d9-21ae-4afa-8fa7-fc2c36a3a600",
+            "name": "message_id",
+            "node_type": "VARIABLE",
+            "x": 18.624999999999773,
+            "y": 43.062500000000114,
+            "parent_id": "cdf373a8-dd31-41ba-81a4-06d1acf2dc93"
+        }
+    ],
+    "edges": [
+        {
+            "edge_id": "8be1116a-6f39-49e2-acbe-b43cadba9885",
+            "source_id": "7a0685ac-e4dd-4490-9dd2-e46498b503c4",
+            "target_id": "1d5ebc83-c853-4106-bd44-79f3bc56b1b1",
+            "relation_type": "IMPORT",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "ab764a8e-9d9a-4e85-99e6-bffc145e24f8",
+            "source_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "target_id": "02044ac4-5b42-462c-b1dc-eb181753f882",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "d0b6a269-d38d-4696-a54a-ed3e9d8ade1b",
+            "source_id": "bfa4fe2b-fbb4-4f84-85cc-3b12d956317b",
+            "target_id": "1d5ebc83-c853-4106-bd44-79f3bc56b1b1",
+            "relation_type": "IMPORT",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "9f2b8960-0494-42fe-9232-502ef56f7aeb",
+            "source_id": "1d5ebc83-c853-4106-bd44-79f3bc56b1b1",
+            "target_id": "9ddbe982-d55d-407b-ab78-c9d8ca2ab292",
+            "relation_type": "IMPORT",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "e31cd5c3-851b-40f1-9cbe-849a0389800b",
+            "source_id": "5a259c93-7b47-431e-8dee-a111fce51271",
+            "target_id": "d7c8e526-2cb3-4bab-b8b0-f5aff144c3ab",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "59b95fde-0781-4082-9595-62d7979a0474",
+            "source_id": "a17fa93a-6a97-42a7-9ae6-24628a1918db",
+            "target_id": "b5456897-cc3d-453c-bdae-8a835640a60c",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "010b3e35-249f-402f-bb11-78d1ba7929b5",
+            "source_id": "0ac27029-e846-41e0-ad9c-877609d3f12c",
+            "target_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "e01d578a-de99-4aad-b2af-12e7d5b5ce32",
+            "source_id": "4198aace-b4bc-44fb-9bc0-8fcc36de8300",
+            "target_id": "f3ffb243-bdd5-4fac-9c85-e90e29ed1214",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "cc560c7e-b49c-4731-863a-b762bdc4a134",
+            "source_id": "d7c8e526-2cb3-4bab-b8b0-f5aff144c3ab",
+            "target_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "bd19a563-cfe9-4510-874e-a2846a7a905b",
+            "source_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536",
+            "target_id": "6884367d-90e5-4aa2-aeb1-e77dd42a0c65",
+            "relation_type": "WRITE",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "fe5bffcc-ee03-40da-984c-eb3bd889200a",
+            "source_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536",
+            "target_id": "b5456897-cc3d-453c-bdae-8a835640a60c",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "c154aafc-b884-4fb8-9f96-11c464a701c8",
+            "source_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345",
+            "target_id": "6884367d-90e5-4aa2-aeb1-e77dd42a0c65",
+            "relation_type": "WRITE",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "379d03f3-2ab7-474f-a36d-bb3b46be7455",
+            "source_id": "6884367d-90e5-4aa2-aeb1-e77dd42a0c65",
+            "target_id": "bbaf3ac1-0a53-459a-9287-058081f83969",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "a5155ae4-6628-4b49-8205-fb3c1eef3289",
+            "source_id": "6884367d-90e5-4aa2-aeb1-e77dd42a0c65",
+            "target_id": "b5456897-cc3d-453c-bdae-8a835640a60c",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "e3b9ff3b-fb93-468b-b7fe-5e6eae0eaf52",
+            "source_id": "bbaf3ac1-0a53-459a-9287-058081f83969",
+            "target_id": "e789bc8d-4ab3-4325-8f26-2dfbe7fec536",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "e5811ef7-b9bc-49cb-9b79-ecbf92f5ddfb",
+            "source_id": "f58588cb-5803-4983-8e0c-6eddcda6b666",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "WRITE",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "b53c5186-d212-4bd0-a509-ff7a3eea4894",
+            "source_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "target_id": "ba81797b-b89e-4190-97da-1d7c844366e4",
+            "relation_type": "READ",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "28cfbd56-69e9-467c-9b52-d26f98477bcf",
+            "source_id": "62b66f28-29b4-41ef-a3cb-c19b321e5345",
+            "target_id": "ba81797b-b89e-4190-97da-1d7c844366e4",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "6fa5a97c-aca2-4c23-a421-879c463084b7",
+            "source_id": "bbaf3ac1-0a53-459a-9287-058081f83969",
+            "target_id": "ba81797b-b89e-4190-97da-1d7c844366e4",
+            "relation_type": "CALL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "782c9110-32f5-4daa-8cbd-bc210067c5af",
+            "source_id": "a7941411-06ac-4af3-b5b9-dad7b24fe3cf",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "26385ba4-ed88-496a-8745-04cc55f11193",
+            "source_id": "bfa4fe2b-fbb4-4f84-85cc-3b12d956317b",
+            "target_id": "a7941411-06ac-4af3-b5b9-dad7b24fe3cf",
+            "relation_type": "FLOW",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "8b9cc250-a591-4243-92f7-e8438df304c0",
+            "source_id": "77e09c6f-c821-4d98-9d3c-40f034e23754",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "d248c2b4-52bb-43e2-88eb-f267498f24c0",
+            "source_id": "ad542016-0044-497d-81df-739fccb6bce5",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "f7bc7e06-2ce4-42b7-8705-e4a73ac28a46",
+            "source_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "target_id": "ad542016-0044-497d-81df-739fccb6bce5",
+            "relation_type": "WRITE",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "121e67cd-db54-462c-a9fa-4a2567233b04",
+            "source_id": "22f13967-9810-4816-b36d-15febf483765",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "ebfb3118-2704-4d50-b145-0a69c8312581",
+            "source_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "target_id": "22f13967-9810-4816-b36d-15febf483765",
+            "relation_type": "WRITE",
+            "is_bidirectional": false
+        },
+        {
+            "edge_id": "f6a993aa-d710-466e-9622-dbb286c0d781",
+            "source_id": "cdf373a8-dd31-41ba-81a4-06d1acf2dc93",
+            "target_id": "689a6489-dc30-4b1e-93d9-85b7a4feb3ac",
+            "relation_type": "EXTERNAL",
+            "is_bidirectional": false
+        }
+    ]
+}

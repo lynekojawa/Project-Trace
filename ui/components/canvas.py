@@ -208,7 +208,7 @@ class ManualWorkbenchCanvas(QGraphicsScene):
         self.node_registry: Dict[str, BlueprintNodeItem] = {}
 
     def keyPressEvent(self, event):
-        if event.key() in (Qt.Key_Delete, Qt.Key_backspace):
+        if event.key() in (Qt.Key_Delete, Qt.Key_Backspace):
             for item in self.selectedItems():
                 if isinstance(item, BlueprintNodeItem):
                     self._delete_node(item)
