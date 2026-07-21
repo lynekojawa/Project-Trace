@@ -146,8 +146,7 @@ class TraceWorkbench(QMainWindow):
                 target_node = self.canvas._find_node_by_name(argument)
                 if target_node:
                     self.canvas._delete_node(target_node)
-                #else:
-                    #print(f"DEBUG: Node '{argument}' not found.")
+
         elif prefix == "DELETE_EDGE" and ("->" in argument or "<->" in argument):
             delimiter = "<->" if "<->" in argument else "->"
             source_id, target_id = argument.split(delimiter, 1)

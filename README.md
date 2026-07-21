@@ -69,3 +69,8 @@ all those little things to track... :)
 2. Node filtering-done!<br>
 Tomorrow I am planning to debug or scan with Dante for last time, and create an example output, then deploy.<br>
 My friend is asking me to make one in her version: English dep version, will update the nodes and edges and packaging for her<br>
+(7/21)<br>
+Todo-List.
+1. Dante inspecion: repository_graph.py, canvas.py, workbench_main.py
+2. work on example
+3. deploy, write read me gyaaaa

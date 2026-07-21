@@ -1,7 +1,7 @@
 import json
 import uuid
-from dataclasses import dataclass, asdict, field
-from typing import Dict, Optional, Set, List
+from dataclasses import dataclass, asdict
+from typing import Dict, Optional, Set
 
 @dataclass
 class NodeState:
@@ -82,8 +82,6 @@ class RepositoryGraph:
         return edge_id
 
     def export_workspace(self, file_path: str) -> None:
-        for edge in self.edges.values():
-            print(f"DEBUG SAVE: {edge.relation_type} is_bidirectional={edge.is_bidirectional}")
         """Serializes the exact in-memory directed topological state tree out to disk."""
         nodes_sorted = sorted(
             self.nodes.values(),

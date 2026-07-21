@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QGraphicsScene, QGraphicsRectItem, QGraphicsTextItem,
     QGraphicsItem, QGraphicsSceneMouseEvent, QGraphicsLineItem,
 )
-from PySide6.QtGui import QPen, QBrush, QColor, QPainter, QPolygonF
+from PySide6.QtGui import QPen, QBrush, QColor, QPainter
 
 class NodeType(Enum):
     FILE = auto()
@@ -94,9 +94,15 @@ class BlueprintNodeItem(QGraphicsRectItem):
 
         potential_parent: Optional[BlueprintNodeItem] = None
 
+        VALID_PARENTS = {
+            NodeType.FILE: [NodeType.CLASS, NodeType.FUNCTION, NodeType.VARIABLE],
+            NodeType.FUNCTION: [NodeType.VARIABLE],
+        }
+
         for item in intersecting_items:
             if isinstance(item, BlueprintNodeItem) and item != self:
-                if item.node_type == NodeType.FILE:
+                valid_parent_types = [t for t, children in VALID_PARENTS.items() if self.node_type in children]
+                if item.node_type in valid_parent_types:
                     potential_parent = item
                     break
 
@@ -149,7 +155,6 @@ class BlueprintEdgeItem(QGraphicsLineItem):
         self.target_node.connected_edges.append(self)
         self.is_bidirectional = is_bidirectional
         self.update_position()
-        print(f"DEBUG: Edge {edge_id} is_bidirectional={self.is_bidirectional}")
 
     def update_position(self) -> None:
         if not self.source_node or not self.target_node:
